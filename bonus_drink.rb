@@ -1,5 +1,5 @@
 class BonusDrink
-  BONUS_COUNT = 3.freeze
+  BONUS_COUNT = 3
 
   class << self
     def total_count_for(amount)
@@ -7,11 +7,10 @@ class BonusDrink
     end
 
     private
-    def bonus(amount)
-      bonus_amount = (amount / BONUS_COUNT).floor
-      rest = (amount % BONUS_COUNT) + bonus_amount
-      bonus_amount += bonus(rest) if rest >= BONUS_COUNT
-      bonus_amount
+    def bonus(amount, total_bonus = 0)
+      bonus_amount, rest = amount.divmod(BONUS_COUNT)
+      rest_amount = rest + bonus_amount
+      rest_amount >= BONUS_COUNT ? bonus(rest_amount, total_bonus + bonus_amount) : total_bonus + bonus_amount
     end
   end
 end
